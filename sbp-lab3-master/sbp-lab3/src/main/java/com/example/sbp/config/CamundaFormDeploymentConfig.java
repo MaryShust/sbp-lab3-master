@@ -22,6 +22,7 @@ public class CamundaFormDeploymentConfig implements ApplicationRunner {
     public void run(ApplicationArguments args) throws Exception {
         deployForm("forms/payment-info.form", "payment-info.form");
         deployForm("forms/payment.form", "payment.form");
+        deployForm("forms/create-bill.form", "create-bill.form");
         deployForm("forms/petrovna-examination.form", "petrovna-examination.form");
     }
 

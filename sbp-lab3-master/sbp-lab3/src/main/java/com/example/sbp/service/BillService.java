@@ -20,15 +20,18 @@ public class BillService {
     private final BankAccountRepository accountRepository;
     private final SecurityService securityService;
 
-    @Transactional
-    public BillResponseDTO createBill(BillCreateRequestDTO billDTO) {
+    public BillResponseDTO createBillWithCheck(BillCreateRequestDTO billDTO) {
         securityService.checkPrivilegeCreateBill(billDTO.getAccountId());
+        return createBill(billDTO.getAccountId());
+    }
 
-        BankAccountEntity account = accountRepository.findById(billDTO.getAccountId())
-                .orElseThrow(() -> new BankAccountNotFoundException("Аккаунт не найден по id: " + billDTO.getAccountId()));
+    @Transactional
+    public BillResponseDTO createBill(String accountId) {
+        BankAccountEntity account = accountRepository.findById(accountId)
+                .orElseThrow(() -> new BankAccountNotFoundException("Аккаунт не найден по id: " + accountId));
 
         BillEntity billEntity = BillEntity.builder()
-                .accountId(billDTO.getAccountId())
+                .accountId(accountId)
                 .balance(0)
                 .isActive(true) // активный так как явно уже не первый
                 .build();

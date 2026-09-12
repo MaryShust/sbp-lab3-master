@@ -45,7 +45,7 @@ public class BillController {
                                     """)))
     })
     public ResponseEntity<?> createBill(@Valid @RequestBody BillCreateRequestDTO billDTO) {
-        BillResponseDTO response = billService.createBill(billDTO);
+        BillResponseDTO response = billService.createBillWithCheck(billDTO);
         Map<String, Object> result = new HashMap<>();
         result.put("id", response.getId());
         result.put("accountId", response.getAccountId());

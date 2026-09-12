@@ -1,0 +1,26 @@
+{
+  "components": [
+    {
+      "label": "ID_аккаунта",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_16u5vya",
+        "columns": null
+      },
+      "id": "Field_1au5nbq",
+      "key": "accauntID",
+      "validate": {
+        "required": true
+      }
+    }
+  ],
+  "type": "default",
+  "id": "create-bill",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.51.0"
+  },
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.24.0",
+  "schemaVersion": 19
+}
