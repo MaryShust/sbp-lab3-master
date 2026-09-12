@@ -2,21 +2,20 @@ package com.example.sbp.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
 @Schema(description = "Ответ с данными счета")
 public class BillResponseDTO {
 
-    @Schema(description = "ID счета", example = "1")
-    private Long id;
+    @Schema(description = "ID счета", example = "550e8400-e29b-41d4-a716-446655440000")
+    private String id;
 
-    @Schema(description = "ID аккаунта владельца", example = "1")
-    private Long accountId;
+    @Schema(description = "ID аккаунта владельца", example = "550e8400-e29b-41d4-a716-446655440000")
+    private String accountId;
 
-    @Schema(description = "Баланс", example = "1500.50")
-    private BigDecimal balance;
+    @Schema(description = "Баланс", example = "1500")
+    private Integer balance;
 
     @Schema(description = "Активен ли счет", example = "true")
     private Boolean isActive;

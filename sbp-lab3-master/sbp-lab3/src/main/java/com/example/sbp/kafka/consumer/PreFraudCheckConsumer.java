@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
-import java.math.BigDecimal;
 import java.time.LocalTime;
 
 @Service
@@ -21,8 +20,8 @@ public class PreFraudCheckConsumer {
     private final PreSuspicionRepository preSuspicionRepository;
     private final BillRepository billRepository;
 
-    private static final BigDecimal HIGH_AMOUNT_THRESHOLD = new BigDecimal("200000");
-    private static final BigDecimal CRITICAL_AMOUNT_THRESHOLD = new BigDecimal("500000");
+    private static final int HIGH_AMOUNT_THRESHOLD = 200000;
+    private static final int CRITICAL_AMOUNT_THRESHOLD = 500000;
 
     @KafkaListener(
             topics = "sbp-fraud-check",
@@ -31,11 +30,11 @@ public class PreFraudCheckConsumer {
     public void handleFraudCheckRequest(FraudTransactionDTO request) {
         log.info("Обработка запроса на проверку на мошенничество по транзакции: {}", request.getTransactionId());
 
-        Long receiverAccountId = billRepository.findById(request.getReceiverBillId())
+        String receiverAccountId = billRepository.findById(request.getReceiverBillId())
                 .map(BillEntity::getAccountId)
                 .orElse(null);
 
-        Long senderAccountId = billRepository.findById(request.getSenderBillId())
+        String senderAccountId = billRepository.findById(request.getSenderBillId())
                 .map(BillEntity::getAccountId)
                 .orElse(null);
 
@@ -80,9 +79,9 @@ public class PreFraudCheckConsumer {
                 fraudTransaction.getSenderBankBic().equals(fraudTransaction.getReceiverBankBic()) &&
                         (time.isBefore(LocalTime.of(10, 0)) || time.isAfter(LocalTime.of(14, 0)))
         ) {
-            if (fraudTransaction.getAmount().compareTo(CRITICAL_AMOUNT_THRESHOLD) > 0) {
+            if (fraudTransaction.getAmount() > CRITICAL_AMOUNT_THRESHOLD) {
                 return RiskLevel.CRITICAL;
-            } else if (fraudTransaction.getAmount().compareTo(HIGH_AMOUNT_THRESHOLD) > 0) {
+            } else if (fraudTransaction.getAmount() > HIGH_AMOUNT_THRESHOLD) {
                 return RiskLevel.HIGH;
             } else {
                 return RiskLevel.MEDIUM;

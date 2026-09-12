@@ -13,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 
 @Service
@@ -53,7 +52,7 @@ public class BankAccountService {
 
         BillEntity defaultBillEntity = BillEntity.builder()
                 .accountId(account.getId())
-                .balance(BigDecimal.ZERO)
+                .balance(0)
                 .isActive(false)  // дефолтный счет требуется в дальнейшем активировать
                 .build();
 
@@ -71,7 +70,7 @@ public class BankAccountService {
         return mapToResponseDTO(account);
     }
 
-    public BankAccountResponseDTO getAccountById(Long id) {
+    public BankAccountResponseDTO getAccountById(String id) {
         securityService.checkPrivilegeReadAccount(id);
 
         BankAccountEntity account = accountRepository.findById(id)
@@ -89,7 +88,7 @@ public class BankAccountService {
     }
 
     @Transactional
-    public void activateDefaultBill(Long accountId, BigDecimal startBalance) {
+    public void activateDefaultBill(String accountId, Integer startBalance) {
         securityService.checkPrivilegeActivateAccount(accountId);
 
         BankAccountEntity account = accountRepository.findById(accountId)
@@ -99,7 +98,7 @@ public class BankAccountService {
                 .orElseThrow(() -> new BillNotFoundException("Дефолтный счет не найден"));
 
         // Баланс должен быть положительным
-        if (defaultBillEntity.getBalance().compareTo(BigDecimal.ZERO) == 0) {
+        if (defaultBillEntity.getBalance() == 0) {
             defaultBillEntity.setIsActive(true);
             defaultBillEntity.setBalance(startBalance);
             billRepository.save(defaultBillEntity);

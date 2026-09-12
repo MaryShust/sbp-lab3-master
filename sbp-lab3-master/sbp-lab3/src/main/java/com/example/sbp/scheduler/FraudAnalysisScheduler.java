@@ -35,14 +35,10 @@ public class FraudAnalysisScheduler {
 
         List<PreSuspicionEntity> events = preSuspicionRepository.findByEventTimeBetween(startTime, now);
 
-        log.info("CRON 1 {}", events);
-
         List<PreSuspicionEntity> criticalHighEvents = events.stream()
                 .filter(e -> e.getRiskLevel() == RiskLevel.CRITICAL
                         || e.getRiskLevel() == RiskLevel.HIGH)
                 .toList();
-
-        log.info("CRON 2 {}", events);
 
         Map<String, List<PreSuspicionEntity>> groupedByBankAndAccount = criticalHighEvents.stream()
                 .collect(Collectors.groupingBy(e -> e.getReceiverBankBic() + ":" + e.getReceiverAccountId()));
@@ -51,8 +47,6 @@ public class FraudAnalysisScheduler {
 
         for (Map.Entry<String, List<PreSuspicionEntity>> entry : groupedByBankAndAccount.entrySet()) {
             List<PreSuspicionEntity> group = entry.getValue();
-
-            log.info("CRON 3 {}", group);
 
             if (group.size() >= 2) {
                 saveSuspicionRecord(group, now);
@@ -65,7 +59,7 @@ public class FraudAnalysisScheduler {
 
     private void saveSuspicionRecord(List<PreSuspicionEntity> group, LocalDateTime analysisDate) {
         PreSuspicionEntity first = group.get(0);
-        Long accountId = first.getReceiverAccountId();
+        String accountId = first.getReceiverAccountId();
         String bankBic = first.getReceiverBankBic();
         int duplicateCount = group.size();
         LocalDateTime since = analysisDate.minusMinutes(4);
@@ -74,11 +68,9 @@ public class FraudAnalysisScheduler {
                 .max(Comparator.comparingInt(r -> r.ordinal()))
                 .orElse(RiskLevel.HIGH);
 
-        log.info("CRON 4");
         accountRepository.findById(accountId).ifPresent(account -> {
             String userName = account.getOwnerName();
 
-            log.info("CRON 5 {}", account);
             Optional<SuspicionEntity> existing = suspicionRepository.findRecentByUserAndAccountAndBank(
                     userName, accountId, bankBic, since);
 
@@ -86,8 +78,7 @@ public class FraudAnalysisScheduler {
                 SuspicionEntity entity = existing.get();
                 if (duplicateCount > entity.getDuplicateCount()) {
                     suspicionRepository.updateDuplicateCount(entity.getId(), duplicateCount);
-
-                    log.info("CRON Обновлен счётчик для дроппера {}: {} -> {}", userName, entity.getDuplicateCount(), duplicateCount);
+                    log.info("Обновлен счётчик для дроппера {}: {} -> {}", userName, entity.getDuplicateCount(), duplicateCount);
                 }
             } else {
                 String senderNames = group.stream()
@@ -95,14 +86,12 @@ public class FraudAnalysisScheduler {
                         .distinct()
                         .collect(Collectors.joining(", "));
 
-                log.info("CRON 6 {}", senderNames);
-
                 String senderBillIds = group.stream()
-                        .map(e -> e.getSenderBillId() != null ? e.getSenderBillId().toString() : "N/A")
+                        .map(e -> e.getSenderBillId() != null ? e.getSenderBillId() : "N/A")
                         .distinct()
                         .collect(Collectors.joining(", "));
 
-                Long senderAccountId = first.getSenderAccountId();
+                String senderAccountId = first.getSenderAccountId();
                 String senderBankBic = first.getSenderBankBic();
 
                 String totalAmount = group.stream()
@@ -123,17 +112,16 @@ public class FraudAnalysisScheduler {
 
                 SuspicionEntity saved = suspicionRepository.save(suspicion);
 
-                log.info("CRON 7 {}", saved);
                 bitrix24Service.createSuspiciousActivityDeal(
                         saved.getId(),
                         userName,
                         account.getPhoneNumber(),
-                        accountId.toString(),
+                        accountId,
                         bankBic,
                         String.valueOf(duplicateCount),
                         maxRiskLevel.name(),
                         String.format("Обнаружено %d подозрительных транзакций за последние 4 минуты.%nОтправители: %s (счета: %s)", duplicateCount, senderNames, senderBillIds),
-                        senderAccountId != null ? senderAccountId.toString() : null,
+                        senderAccountId,
                         senderBankBic,
                         totalAmount
                 );

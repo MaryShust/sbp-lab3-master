@@ -82,14 +82,14 @@ public class XmlUserDetailsService implements UserDetailsService {
         log.debug("Обновили роль для пользователя {}: {}", username, newRoleName);
     }
 
-    public synchronized void updateUserAccountIdByPhone(String phoneNumber, Long accountId) {
+    public synchronized void updateUserAccountIdByPhone(String phoneNumber, String accountId) {
         Document document = loadDocument();
         Element userElement = findUserElementByPhone(document, phoneNumber);
         if (userElement == null) {
             log.debug("Не нашли пользователя с телефоном: {}", phoneNumber);
             return;
         }
-        userElement.setAttribute("accountId", accountId != null ? accountId.toString() : "");
+        userElement.setAttribute("accountId", accountId != null ? accountId : "");
         incrementTokenVersion(userElement);
         saveDocument(document);
         log.debug("Обновлен accountId для пользователя с номером телефона {}: {}", phoneNumber, accountId);
@@ -144,7 +144,7 @@ public class XmlUserDetailsService implements UserDetailsService {
         String rolesStr = userElement.getAttribute("roles");
 
         String accountIdStr = userElement.getAttribute("accountId");
-        Long accountId = !accountIdStr.isBlank() ? Long.parseLong(accountIdStr) : null;
+        String accountId = !accountIdStr.isBlank() ? accountIdStr : null;
 
         String phoneNumber = userElement.getAttribute("phoneNumber");
         if (phoneNumber.isBlank()) {

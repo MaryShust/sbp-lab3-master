@@ -13,11 +13,11 @@ import java.util.Optional;
 @Repository
 public interface SuspicionRepository extends JpaRepository<SuspicionEntity, Long> {
     @Query("SELECT s FROM SuspicionEntity s WHERE s.userName = :userName " +
-           "AND s.accountId = :accountId AND s.bankBic = :bankBic " +
-           "AND s.analysisDate >= :since")
+            "AND s.accountId = :accountId AND s.bankBic = :bankBic " +
+            "AND s.analysisDate >= :since")
     Optional<SuspicionEntity> findRecentByUserAndAccountAndBank(
             @Param("userName") String userName,
-            @Param("accountId") Long accountId,
+            @Param("accountId") String accountId,
             @Param("bankBic") String bankBic,
             @Param("since") LocalDateTime since);
 

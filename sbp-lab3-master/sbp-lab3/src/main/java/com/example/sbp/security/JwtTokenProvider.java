@@ -85,9 +85,9 @@ public class JwtTokenProvider {
         return privStr == null || privStr.isEmpty() ? List.of() : List.of(privStr.split(","));
     }
 
-    public Long getAccountIdFromToken(String token) {
+    public String getAccountIdFromToken(String token) {
         Object accountId = parseClaims(token).get("accountId");
-        return accountId != null ? Long.parseLong(accountId.toString()) : null;
+        return accountId != null ? accountId.toString() : null;
     }
 
     public String getPhoneNumberFromToken(String token) {

@@ -16,7 +16,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -70,8 +69,8 @@ public class BankAccountController {
                             schema = @Schema(implementation = BankAccountResponseDTO.class))),
     })
     public ResponseEntity<?> getAccountById(
-            @Parameter(description = "ID аккаунта", example = "1")
-            @PathVariable Long id
+            @Parameter(description = "ID аккаунта", example = "550e8400-e29b-41d4-a716-446655440000")
+            @PathVariable String id
     ) {
         BankAccountResponseDTO response = bankAccountService.getAccountById(id);
         return ResponseEntity.ok(response);
@@ -110,10 +109,10 @@ public class BankAccountController {
                                     """)))
     })
     public ResponseEntity<?> activateDefaultBill(
-            @Parameter(description = "ID аккаунта", example = "1")
-            @PathVariable Long accountId,
+            @Parameter(description = "ID аккаунта", example = "550e8400-e29b-41d4-a716-446655440000")
+            @PathVariable String accountId,
             @Parameter(description = "Начальный баланс для активации", example = "1000")
-            @RequestParam(required = true) BigDecimal startBalance
+            @RequestParam(required = true) Integer startBalance
     ) {
         bankAccountService.activateDefaultBill(accountId, startBalance);
         Map<String, String> response = new HashMap<>();

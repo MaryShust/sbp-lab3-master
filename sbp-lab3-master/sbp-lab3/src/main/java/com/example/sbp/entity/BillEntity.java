@@ -2,8 +2,8 @@ package com.example.sbp.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Table(name = "bills")
@@ -14,14 +14,13 @@ import java.time.LocalDateTime;
 public class BillEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
-    @Column(name = "account_id", nullable = false)
-    private Long accountId;
+    @Column(name = "account_id", nullable = false, length = 36)
+    private String accountId;
 
     @Column(name = "balance", nullable = false)
-    private BigDecimal balance = BigDecimal.ZERO;
+    private Integer balance = 0;
 
     @Column(name = "is_active")
     private Boolean isActive = false;  // По умолчанию false для первого счета при создании аккаунта
@@ -34,6 +33,9 @@ public class BillEntity {
 
     @PrePersist
     protected void onCreate() {
+        if (id == null) {
+            id = UUID.randomUUID().toString().replace("-", "0");
+        }
         createdAt = LocalDateTime.now();
         updatedAt = LocalDateTime.now();
     }

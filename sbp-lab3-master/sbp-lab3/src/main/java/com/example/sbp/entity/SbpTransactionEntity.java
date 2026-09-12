@@ -3,7 +3,6 @@ package com.example.sbp.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.*;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -21,25 +20,25 @@ public class SbpTransactionEntity {
     @Column(name = "transaction_id", unique = true, nullable = false)
     private String transactionId;
 
-    @Column(name = "sender_bill_id", nullable = false)
-    private Long senderBillId;
+    @Column(name = "sender_bill_id", nullable = false, length = 36)
+    private String senderBillId;
 
     @Column(name = "sender_bank_bic", nullable = false, length = 11)
     @Size(min = 8, max = 11, message = "Код BIC банка должен содержать от 8 до 11 символов")
     private String senderBankBic;
 
-    @Column(name = "receiver_bill_id", nullable = false)
-    private Long receiverBillId;
+    @Column(name = "receiver_bill_id", nullable = false, length = 36)
+    private String receiverBillId;
 
     @Column(name = "receiver_bank_bic", nullable = false, length = 11)
     @Size(min = 8, max = 11, message = "Код BIC банка должен содержать от 8 до 11 символов")
     private String receiverBankBic;
 
     @Column(name = "amount", nullable = false)
-    private BigDecimal amount;
+    private Integer amount;
 
     @Column(name = "commission")
-    private BigDecimal commission = BigDecimal.ZERO;
+    private Integer commission = 0;
 
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)

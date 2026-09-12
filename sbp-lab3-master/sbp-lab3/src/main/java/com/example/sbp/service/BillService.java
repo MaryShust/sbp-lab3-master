@@ -11,7 +11,6 @@ import com.example.sbp.security.SecurityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import java.math.BigDecimal;
 
 @Service
 @RequiredArgsConstructor
@@ -30,7 +29,7 @@ public class BillService {
 
         BillEntity billEntity = BillEntity.builder()
                 .accountId(billDTO.getAccountId())
-                .balance(BigDecimal.ZERO)
+                .balance(0)
                 .isActive(true) // активный так как явно уже не первый
                 .build();
 
@@ -43,7 +42,7 @@ public class BillService {
         return mapToResponseDTO(billEntity);
     }
 
-    public BillResponseDTO getBillById(Long id) {
+    public BillResponseDTO getBillById(String id) {
         securityService.checkPrivilegeReadBill(id);
 
         BillEntity billEntity = billRepository.findById(id)
@@ -52,10 +51,10 @@ public class BillService {
     }
 
     @Transactional
-    public BillResponseDTO replenishBill(Long accountId, Long billId, BigDecimal amount) {
+    public BillResponseDTO replenishBill(String accountId, String billId, Integer amount) {
         securityService.checkPrivilegeReplenishBill(billId);
 
-        if (amount == null || amount.compareTo(BigDecimal.ZERO) <= 0) {
+        if (amount == null || amount <= 0) {
             throw new IllegalArgumentException("Сумма пополнения должна быть положительной");
         }
 
@@ -79,7 +78,7 @@ public class BillService {
         }
 
         // Пополнение счета
-        BigDecimal newBalance = billEntity.getBalance().add(amount);
+        int newBalance = billEntity.getBalance() + amount;
         billEntity.setBalance(newBalance);
 
         billRepository.save(billEntity);
@@ -87,7 +86,7 @@ public class BillService {
         return mapToResponseDTO(billEntity);
     }
 
-    public BillResponseDTO getDefaultBillByAccountId(Long accountId) {
+    public BillResponseDTO getDefaultBillByAccountId(String accountId) {
         securityService.checkPrivilegeReadAccount(accountId);
 
         BankAccountEntity account = accountRepository.findById(accountId)

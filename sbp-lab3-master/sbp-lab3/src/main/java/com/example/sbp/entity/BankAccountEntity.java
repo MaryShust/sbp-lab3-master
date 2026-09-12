@@ -6,6 +6,7 @@ import lombok.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Table(name = "bank_accounts")
@@ -16,8 +17,7 @@ import java.util.List;
 public class BankAccountEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
     @Column(name = "phone_number", unique = true, nullable = false, length = 11)
     @Size(max = 11, message = "Номер телефона не должен превышать 11 символов")
@@ -40,8 +40,8 @@ public class BankAccountEntity {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @Column(name = "default_bill_id")
-    private Long defaultBillId;
+    @Column(name = "default_bill_id", length = 36)
+    private String defaultBillId;
 
     @ElementCollection
     @CollectionTable(
@@ -49,10 +49,13 @@ public class BankAccountEntity {
             joinColumns = @JoinColumn(name = "account_id")
     )
     @Column(name = "bill_id")
-    private List<Long> allBillIds = new ArrayList<>();
+    private List<String> allBillIds = new ArrayList<>();
 
     @PrePersist
     protected void onCreate() {
+        if (id == null) {
+            id = UUID.randomUUID().toString().replace("-", "0");
+        }
         createdAt = LocalDateTime.now();
         updatedAt = LocalDateTime.now();
     }

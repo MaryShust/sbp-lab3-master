@@ -3,7 +3,6 @@ package com.example.sbp.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
 import lombok.Data;
-import java.math.BigDecimal;
 
 @Data
 @Schema(description = "Запрос на перевод по СБП")
@@ -11,11 +10,11 @@ public class PaymentRequestDTO {
 
     @Schema(
             description = "ID счета отправителя",
-            example = "1",
+            example = "550e8400-e29b-41d4-a716-446655440000",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    @NotNull(message = "ID счета отправителя обязателен")
-    private Long senderBillId;
+    @NotBlank(message = "ID счета отправителя обязателен")
+    private String senderBillId;
 
     @Schema(
             description = "Идентификатор получателя (ID счета или номер телефона)",
@@ -27,15 +26,15 @@ public class PaymentRequestDTO {
 
     @Schema(
             description = "Сумма перевода",
-            example = "1000.00",
-            minimum = "0.01",
+            example = "1000",
+            minimum = "1",
             maximum = "1000000",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
     @NotNull(message = "Сумма обязательна")
-    @DecimalMin(value = "0.01", message = "Минимум 0.01")
-    @DecimalMax(value = "1000000", message = "Максимум 1 000 000")
-    private BigDecimal amount;
+    @Min(value = 1, message = "Минимум 1")
+    @Max(value = 1000000, message = "Максимум 1 000 000")
+    private Integer amount;
 
     @Schema(
             description = "Сообщение к переводу",

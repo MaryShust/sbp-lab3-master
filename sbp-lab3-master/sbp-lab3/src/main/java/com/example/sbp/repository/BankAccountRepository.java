@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface BankAccountRepository extends JpaRepository<BankAccountEntity, Long> {
+public interface BankAccountRepository extends JpaRepository<BankAccountEntity, String> {
     Optional<BankAccountEntity> findByPhoneNumber(String phoneNumber);
     boolean existsByPhoneNumber(String phoneNumber);
 }

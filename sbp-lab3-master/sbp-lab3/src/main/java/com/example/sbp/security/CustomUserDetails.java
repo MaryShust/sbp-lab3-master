@@ -16,12 +16,12 @@ public class CustomUserDetails implements UserDetails {
     private final String password;
     private final String role;
     private final Set<Privilege> privileges;
-    private final Long accountId;
+    private final String accountId;
     private final String phoneNumber;
     private final int tokenVersion;
 
     public CustomUserDetails(String username, String password, String role, Set<Privilege> privileges,
-                             Long accountId, String phoneNumber, int tokenVersion) {
+                             String accountId, String phoneNumber, int tokenVersion) {
         this.username = username;
         this.password = password;
         this.role = role;

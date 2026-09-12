@@ -15,7 +15,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -66,8 +65,8 @@ public class BillController {
                             schema = @Schema(implementation = BillResponseDTO.class)))
     })
     public ResponseEntity<?> getBillById(
-            @Parameter(description = "ID счета", example = "1")
-            @PathVariable Long id) {
+            @Parameter(description = "ID счета", example = "550e8400-e29b-41d4-a716-446655440000")
+            @PathVariable String id) {
         BillResponseDTO response = billService.getBillById(id);
         return ResponseEntity.ok(response);
     }
@@ -83,14 +82,14 @@ public class BillController {
                             schema = @Schema(implementation = BillResponseDTO.class)))
     })
     public ResponseEntity<?> replenishBill(
-            @Parameter(description = "ID аккаунта", example = "1")
-            @RequestParam Long accountId,
+            @Parameter(description = "ID аккаунта", example = "550e8400-e29b-41d4-a716-446655440000")
+            @RequestParam String accountId,
 
-            @Parameter(description = "ID счета", example = "1")
-            @PathVariable Long id,
+            @Parameter(description = "ID счета", example = "550e8400-e29b-41d4-a716-446655440000")
+            @PathVariable String id,
 
-            @Parameter(description = "Сумма пополнения", example = "1000.50")
-            @RequestBody BigDecimal amount) {
+            @Parameter(description = "Сумма пополнения", example = "1000")
+            @RequestBody Integer amount) {
 
         BillResponseDTO response = billService.replenishBill(accountId, id, amount);
         return ResponseEntity.ok(response);
@@ -107,8 +106,8 @@ public class BillController {
                             schema = @Schema(implementation = BillResponseDTO.class)))
     })
     public ResponseEntity<?> getDefaultBillByAccountId(
-            @Parameter(description = "ID аккаунта", example = "1")
-            @PathVariable Long accountId) {
+            @Parameter(description = "ID аккаунта", example = "550e8400-e29b-41d4-a716-446655440000")
+            @PathVariable String accountId) {
         BillResponseDTO response = billService.getDefaultBillByAccountId(accountId);
         return ResponseEntity.ok(response);
     }

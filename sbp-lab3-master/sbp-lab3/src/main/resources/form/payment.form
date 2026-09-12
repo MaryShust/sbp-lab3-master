@@ -1,0 +1,68 @@
+{
+  "components": [
+    {
+      "label": "Sender bill id",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_18xbh35",
+        "columns": null
+      },
+      "id": "Field_0gox7dy",
+      "key": "sender_bill_id",
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "label": "Receiver identifier",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_0ragmb3",
+        "columns": null
+      },
+      "id": "Field_1t8dlm2",
+      "key": "receiver_identifier",
+      "validate": {
+        "required": true
+      },
+      "description": "Id аккаунта или счета"
+    },
+    {
+      "label": "Amount",
+      "type": "number",
+      "layout": {
+        "row": "Row_1f4odgn",
+        "columns": null
+      },
+      "id": "Field_1x7o3jd",
+      "key": "amount",
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "label": "Message",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_19iijd7",
+        "columns": null
+      },
+      "id": "Field_1xeq5fe",
+      "key": "message",
+      "validate": {
+        "required": true,
+        "minLength": "5",
+        "maxLength": "70"
+      }
+    }
+  ],
+  "type": "default",
+  "id": "payment",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.50.1"
+  },
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.24.0",
+  "schemaVersion": 19
+}

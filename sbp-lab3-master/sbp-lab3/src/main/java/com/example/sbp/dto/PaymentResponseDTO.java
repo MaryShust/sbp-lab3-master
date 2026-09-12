@@ -2,7 +2,6 @@ package com.example.sbp.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
@@ -15,17 +14,17 @@ public class PaymentResponseDTO {
     @Schema(description = "Статус транзакции", example = "SUCCESS")
     private String status;
 
-    @Schema(description = "ID счета отправителя", example = "1")
-    private Long senderBillId;
+    @Schema(description = "ID счета отправителя", example = "550e8400-e29b-41d4-a716-446655440000")
+    private String senderBillId;
 
-    @Schema(description = "ID счета получателя", example = "2")
-    private Long receiverBillId;
+    @Schema(description = "ID счета получателя", example = "550e8400-e29b-41d4-a716-446655440000")
+    private String receiverBillId;
 
-    @Schema(description = "Сумма перевода", example = "1000.00")
-    private BigDecimal amount;
+    @Schema(description = "Сумма перевода", example = "1000")
+    private Integer amount;
 
-    @Schema(description = "Комиссия", example = "10.00")
-    private BigDecimal commission;
+    @Schema(description = "Комиссия", example = "10")
+    private Integer commission;
 
     @Schema(description = "Сообщение", example = "Оплата услуг")
     private String message;

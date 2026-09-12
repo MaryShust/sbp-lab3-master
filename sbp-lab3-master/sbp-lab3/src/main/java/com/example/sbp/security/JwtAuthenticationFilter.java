@@ -25,6 +25,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtTokenProvider tokenProvider;
 
     @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        return !request.getRequestURI().startsWith("/api/");
+    }
+
+    @Override
     protected void doFilterInternal(
             @NonNull HttpServletRequest request,
             @NonNull HttpServletResponse response,
@@ -42,7 +47,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 String username = tokenProvider.getUsernameFromToken(jwt);
                 String role = tokenProvider.getRoleFromToken(jwt);
                 List<String> privilegesStr = tokenProvider.getPrivilegesFromToken(jwt);
-                Long accountId = tokenProvider.getAccountIdFromToken(jwt);
+                String accountId = tokenProvider.getAccountIdFromToken(jwt);
                 String phoneNumber = tokenProvider.getPhoneNumberFromToken(jwt);
                 int tokenVersion = tokenProvider.getTokenVersionFromToken(jwt);
 

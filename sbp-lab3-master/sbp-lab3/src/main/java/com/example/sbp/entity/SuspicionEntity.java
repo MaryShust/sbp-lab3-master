@@ -21,8 +21,8 @@ public class SuspicionEntity {
     @Size(max = 100, message = "Имя владельца не должно превышать 100 символов")
     private String userName;
 
-    @Column(name = "account_id", nullable = false)
-    private Long accountId;
+    @Column(name = "account_id", nullable = false, length = 36)
+    private String accountId;
 
     @Column(name = "bank_bic", nullable = false, length = 11)
     @Size(min = 8, max = 11, message = "Код BIC банка должен содержать от 8 до 11 символов")
@@ -34,8 +34,8 @@ public class SuspicionEntity {
     @Column(name = "analysis_date", nullable = false)
     private LocalDateTime analysisDate;
 
-    @Column(name = "sender_account_id")
-    private Long senderAccountId;
+    @Column(name = "sender_account_id", length = 36)
+    private String senderAccountId;
 
     @Column(name = "sender_bank_bic", length = 11)
     private String senderBankBic;

@@ -50,7 +50,11 @@ public class PaymentController {
                                     """)))
     })
     public ResponseEntity<?> processSbpPayment(@Valid @RequestBody PaymentRequestDTO request) {
-        PaymentResponseDTO response = paymentService.processPayment(request);
+        String transactionId = paymentService.processPaymentWithCheck(request);
+        Map<String, String> response = new HashMap<>();
+        response.put("status", "Платеж отправился на согласование");
+        response.put("transactionId", transactionId);
+
         return ResponseEntity.ok(response);
     }
 
@@ -68,7 +72,7 @@ public class PaymentController {
             @Parameter(description = "ID транзакции", example = "SBP1234567890_123")
             @PathVariable String transactionId
     ) {
-        PaymentResponseDTO response = paymentService.getTransactionStatus(transactionId);
+        PaymentResponseDTO response = paymentService.getTransactionStatusWithCheck(transactionId);
         return ResponseEntity.ok(response);
     }
 

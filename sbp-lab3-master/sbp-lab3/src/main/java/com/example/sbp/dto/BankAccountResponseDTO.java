@@ -9,8 +9,8 @@ import java.util.List;
 @Schema(description = "Ответ с данными аккаунта")
 public class BankAccountResponseDTO {
 
-    @Schema(description = "ID аккаунта", example = "1")
-    private Long id;
+    @Schema(description = "ID аккаунта", example = "550e8400-e29b-41d4-a716-446655440000")
+    private String id;
 
     @Schema(description = "Номер телефона", example = "79123456789")
     private String phoneNumber;
@@ -30,9 +30,9 @@ public class BankAccountResponseDTO {
     @Schema(description = "Дата обновления", example = "2024-01-01T12:00:00")
     private LocalDateTime updatedAt;
 
-    @Schema(description = "ID дефолтного счета", example = "1")
-    private Long defaultBillId;
+    @Schema(description = "ID дефолтного счета", example = "550e8400-e29b-41d4-a716-446655440000")
+    private String defaultBillId;
 
-    @Schema(description = "Список ID всех счетов", example = "[1, 2, 3]")
-    private List<Long> allBillIds;
+    @Schema(description = "Список ID всех счетов", example = "[\"550e8400-e29b-41d4-a716-446655440000\"]")
+    private List<String> allBillIds;
 }
