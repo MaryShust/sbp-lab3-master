@@ -7,7 +7,7 @@
       </bpmn:extensionElements>
       <bpmn:outgoing>Flow_0wuy19i</bpmn:outgoing>
     </bpmn:startEvent>
-    <bpmn:userTask id="Activity_0qg26qi" name="Ввод данных" camunda:formRef="payment-info" camunda:formRefBinding="latest">
+    <bpmn:userTask id="Activity_0qg26qi" name="Ввод данных" camunda:formRef="payment-info" camunda:formRefBinding="latest" camunda:assignee="${initiator}">
       <bpmn:incoming>Flow_0wuy19i</bpmn:incoming>
       <bpmn:outgoing>Flow_0etixso</bpmn:outgoing>
     </bpmn:userTask>
@@ -18,7 +18,7 @@
     <bpmn:endEvent id="Event_1tz2xv4" name="Конец">
       <bpmn:incoming>Flow_1qipr1d</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:userTask id="Activity_139xwux" name="Просмотр результат">
+    <bpmn:userTask id="Activity_139xwux" name="Просмотр результат" camunda:assignee="${initiator}">
       <bpmn:incoming>Flow_1h15nu8</bpmn:incoming>
       <bpmn:incoming>Flow_174m2mu</bpmn:incoming>
       <bpmn:outgoing>Flow_1qipr1d</bpmn:outgoing>

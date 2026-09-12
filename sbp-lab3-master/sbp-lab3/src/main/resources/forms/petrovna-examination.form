@@ -78,7 +78,7 @@
   "id": "petrovna-examination",
   "exporter": {
     "name": "Camunda Modeler",
-    "version": "5.50.1"
+    "version": "5.51.0"
   },
   "executionPlatform": "Camunda Platform",
   "executionPlatformVersion": "7.24.0",

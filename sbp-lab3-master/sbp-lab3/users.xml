@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><users>
-    <user accountId="1" password="{bcrypt}$2a$10$HZo7FkK.2emlQpsg5w1ck.FRUYuNty0QyjW.4MSPdXDtgxWKFNhZi" phoneNumber="79123456789" roles="ADMIN" tokenVersion="1" username="admin"/>
+    <user accountId="1" password="{bcrypt}$2a$10$HZo7FkK.2emlQpsg5w1ck.FRUYuNty0QyjW.4MSPdXDtgxWKFNhZi" phoneNumber="79123456789" roles="ADMIN" tokenVersion="3" username="admin"/>
 
     <user accountId="" password="{bcrypt}$2a$10$FCg9e1rqBbn3qi8JnT6RsOUskdVomKPO/EH4RfD1gpLoBvN/lsi96" phoneNumber="79123456788" roles="MANAGER" tokenVersion="1" username="manager"/>
-</users>
+
+    <user accountId="9d2375e90a44e04d52091d10a634fce48843" password="{bcrypt}$2a$10$wPG7J3DV/xYMUi4y49tc8umchAECH0ESZBB5M6/szJrRpKNa6gTiS" phoneNumber="79200000001" roles="USER" tokenVersion="4" username="user1"/>
+    <user accountId="1c01d0cf04008048b40b70b074fe51c437f2" password="{bcrypt}$2a$10$pRYMBQEBChIf4bdt0sSfpuZ5ZIHMU8YE3TpYtt10mXSGWQr91Mdea" phoneNumber="79200000002" roles="USER" tokenVersion="2" username="user2"/>
+    <user accountId="8ddddfac0939d04a1f0b5090e812678add02" password="{bcrypt}$2a$10$Ngc7EOyQxPUHLTwtxfJ4R.WS2yzGcGQZBLtcPfXFYtaADznvATTOS" phoneNumber="79200000003" roles="MANAGER" tokenVersion="5" username="manager1"/>
+    <user accountId="be4aba370a6e4047920aa75063a06f1b993a" password="{bcrypt}$2a$10$PfbEPDlzaHatXUFuXXFVQ.RN.aFQV31C7jdLo3lgdhL7UW5AQKmmO" phoneNumber="79200000004" roles="ADMIN" tokenVersion="3" username="admin1"/></users>
