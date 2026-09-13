@@ -18,7 +18,7 @@ public class CheckPrivilegeCreateBillDelegate implements JavaDelegate {
     public void execute(DelegateExecution execution) throws Exception {
         log.info("TEST");
 
-        String accountId = (String) execution.getVariable("accauntID");
+        String accountId = (String) execution.getVariable("accountID");
         String initiatorId = securityService.getInitiatorId(execution);
         String group = securityService.getInitiatorGroup(initiatorId);
 

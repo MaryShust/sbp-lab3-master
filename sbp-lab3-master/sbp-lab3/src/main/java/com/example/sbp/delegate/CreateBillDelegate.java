@@ -19,7 +19,7 @@ public class CreateBillDelegate implements JavaDelegate {
     public void execute(DelegateExecution execution) throws Exception {
         log.info("TEST");
 
-        String accountId = (String) execution.getVariable("accauntID");
+        String accountId = (String) execution.getVariable("accountID");
 
         try {
             billService.createBill(accountId);
