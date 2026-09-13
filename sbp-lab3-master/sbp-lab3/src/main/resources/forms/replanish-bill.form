@@ -1,0 +1,53 @@
+{
+  "components": [
+    {
+      "label": "ID аккаунта",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_1gzowbp",
+        "columns": null
+      },
+      "id": "Field_0z1qu7v",
+      "key": "accountID",
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "label": "ID счета",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_0ad8cgm",
+        "columns": null
+      },
+      "id": "Field_04i8oxy",
+      "key": "billID",
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "label": "Сумма пополнения",
+      "type": "number",
+      "layout": {
+        "row": "Row_1hw7305",
+        "columns": null
+      },
+      "id": "Field_1s4vdbo",
+      "key": "amount",
+      "validate": {
+        "required": true
+      },
+      "properties": {}
+    }
+  ],
+  "type": "default",
+  "id": "replanish-bill",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.51.0"
+  },
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.24.0",
+  "schemaVersion": 19
+}

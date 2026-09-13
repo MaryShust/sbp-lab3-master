@@ -91,7 +91,7 @@ public class BillController {
             @Parameter(description = "Сумма пополнения", example = "1000")
             @RequestBody Integer amount) {
 
-        BillResponseDTO response = billService.replenishBill(accountId, id, amount);
+        BillResponseDTO response = billService.replenishBillWithCheck(accountId, id, amount);
         return ResponseEntity.ok(response);
     }
 

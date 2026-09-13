@@ -53,6 +53,11 @@ public class BillService {
         return mapToResponseDTO(billEntity);
     }
 
+    public BillResponseDTO replenishBillWithCheck(String accountId, String billId, Integer amount) {
+        securityService.checkPrivilegeReplenishBill(billId);
+        return replenishBill(accountId, billId, amount);
+    }
+
     @Transactional
     public BillResponseDTO replenishBill(String accountId, String billId, Integer amount) {
         securityService.checkPrivilegeReplenishBill(billId);
