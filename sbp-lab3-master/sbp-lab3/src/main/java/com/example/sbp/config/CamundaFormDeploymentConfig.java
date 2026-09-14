@@ -26,6 +26,7 @@ public class CamundaFormDeploymentConfig implements ApplicationRunner {
         deployForm("forms/petrovna-examination.form", "petrovna-examination.form");
         deployForm("forms/replanish-bill.form", "replanish-bill.form");
         deployForm("forms/account-info.form", "account-info.form");
+
     }
 
     private void deployForm(String classpathPath, String resourceName) throws Exception {
