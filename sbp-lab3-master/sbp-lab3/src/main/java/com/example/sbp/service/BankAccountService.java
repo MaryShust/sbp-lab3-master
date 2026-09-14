@@ -70,9 +70,12 @@ public class BankAccountService {
         return mapToResponseDTO(account);
     }
 
-    public BankAccountResponseDTO getAccountById(String id) {
+    public BankAccountResponseDTO getAccountByIdWithCheck(String id) {
         securityService.checkPrivilegeReadAccount(id);
+        return  getAccountById(id);
+    }
 
+    public BankAccountResponseDTO getAccountById(String id) {
         BankAccountEntity account = accountRepository.findById(id)
                 .orElseThrow(() -> new BankAccountNotFoundException("Аккаунт не найден с id: " + id));
         return mapToResponseDTO(account);

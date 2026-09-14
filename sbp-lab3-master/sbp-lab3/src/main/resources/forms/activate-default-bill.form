@@ -1,0 +1,39 @@
+{
+  "components": [
+    {
+      "label": "ID аккаунта",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_1oq7o23",
+        "columns": null
+      },
+      "id": "Field_09mu8cp",
+      "key": "accountID",
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "label": "startBalance",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_0e1z5nt",
+        "columns": null
+      },
+      "id": "Field_07zwmjo",
+      "key": "startBalance",
+      "validate": {
+        "required": true
+      }
+    }
+  ],
+  "type": "default",
+  "id": "Form_1rca63d",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.9.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.51.0"
+  },
+  "schemaVersion": 19
+}

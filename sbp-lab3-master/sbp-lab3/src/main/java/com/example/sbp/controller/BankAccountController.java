@@ -72,7 +72,7 @@ public class BankAccountController {
             @Parameter(description = "ID аккаунта", example = "550e8400-e29b-41d4-a716-446655440000")
             @PathVariable String id
     ) {
-        BankAccountResponseDTO response = bankAccountService.getAccountById(id);
+        BankAccountResponseDTO response = bankAccountService.getAccountByIdWithCheck(id);
         return ResponseEntity.ok(response);
     }
 
