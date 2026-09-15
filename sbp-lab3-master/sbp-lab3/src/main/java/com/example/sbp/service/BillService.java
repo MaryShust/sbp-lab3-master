@@ -45,9 +45,12 @@ public class BillService {
         return mapToResponseDTO(billEntity);
     }
 
-    public BillResponseDTO getBillById(String id) {
+    public BillResponseDTO getBillByIdWithCheck(String id) {
         securityService.checkPrivilegeReadBill(id);
+        return getBillById(id);
+    }
 
+    public BillResponseDTO getBillById(String id) {
         BillEntity billEntity = billRepository.findById(id)
                 .orElseThrow(() -> new BillNotFoundException("Счет не найден по id: " + id));
         return mapToResponseDTO(billEntity);
@@ -60,8 +63,6 @@ public class BillService {
 
     @Transactional
     public BillResponseDTO replenishBill(String accountId, String billId, Integer amount) {
-        securityService.checkPrivilegeReplenishBill(billId);
-
         if (amount == null || amount <= 0) {
             throw new IllegalArgumentException("Сумма пополнения должна быть положительной");
         }
@@ -90,20 +91,6 @@ public class BillService {
         billEntity.setBalance(newBalance);
 
         billRepository.save(billEntity);
-
-        return mapToResponseDTO(billEntity);
-    }
-
-    public BillResponseDTO getDefaultBillByAccountId(String accountId) {
-        securityService.checkPrivilegeReadAccount(accountId);
-
-        BankAccountEntity account = accountRepository.findById(accountId)
-                .orElseThrow(() -> new BankAccountNotFoundException("Аккаунт не найден по id: " + accountId));
-
-        BillEntity billEntity = billRepository.findById(account.getDefaultBillId())
-                .orElseThrow(() -> new BillNotFoundException("Счет не найден по id: " + account.getDefaultBillId()));
-
-        securityService.checkPrivilegeReadBill(billEntity.getId());
 
         return mapToResponseDTO(billEntity);
     }

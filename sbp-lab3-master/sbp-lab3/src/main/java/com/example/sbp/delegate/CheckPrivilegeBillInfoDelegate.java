@@ -10,13 +10,13 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class CheckPrivilegeAccountInfoDelegate implements JavaDelegate {
+public class CheckPrivilegeBillInfoDelegate implements JavaDelegate {
 
     private final SecurityService securityService;
 
     @Override
     public void execute(DelegateExecution execution) {
-        String accountID = (String) execution.getVariable("accountID");
+        String billID = (String) execution.getVariable("billID");
 
         String initiatorId = securityService.getInitiatorId(execution);
         String group = securityService.getInitiatorGroup(initiatorId);
@@ -28,7 +28,8 @@ public class CheckPrivilegeAccountInfoDelegate implements JavaDelegate {
         execution.setVariable("userGroup", group);
 
         if ("user".equals(group) &&
-                accountID.equals(initiatorId)
+                initiatorId != null &&
+                securityService.isBillOwnedByCurrentUser(billID, initiatorId)
         ) {
             execution.setVariable("hasPrivilege", true);
             log.info("TEST 3");

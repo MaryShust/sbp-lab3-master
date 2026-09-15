@@ -14,13 +14,13 @@
       }
     },
     {
-      "label": "startBalance",
-      "type": "textfield",
+      "label": "Сумма активации",
+      "type": "number",
       "layout": {
-        "row": "Row_0e1z5nt",
+        "row": "Row_07emr0f",
         "columns": null
       },
-      "id": "Field_07zwmjo",
+      "id": "Field_1ver1lo",
       "key": "startBalance",
       "validate": {
         "required": true
@@ -28,12 +28,12 @@
     }
   ],
   "type": "default",
-  "id": "Form_1rca63d",
+  "id": "activate-default-bill",
   "executionPlatform": "Camunda Cloud",
   "executionPlatformVersion": "8.9.0",
   "exporter": {
     "name": "Camunda Modeler",
-    "version": "5.51.0"
+    "version": "5.50.1"
   },
   "schemaVersion": 19
 }

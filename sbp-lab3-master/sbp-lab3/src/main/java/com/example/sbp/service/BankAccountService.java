@@ -81,19 +81,13 @@ public class BankAccountService {
         return mapToResponseDTO(account);
     }
 
-    public BankAccountResponseDTO getAccountByPhone(String phoneNumber) {
-        BankAccountEntity account = accountRepository.findByPhoneNumber(phoneNumber)
-                .orElseThrow(() -> new BankAccountNotFoundException("Аккаунт не найден с телефоном: " + phoneNumber));
-
-        securityService.checkPrivilegeReadAccount(account.getId());
-
-        return mapToResponseDTO(account);
+    public void activateDefaultBillWithCheck(String accountId, Integer startBalance) {
+        securityService.checkPrivilegeActivateAccount(accountId);
+        activateDefaultBill(accountId, startBalance);
     }
 
     @Transactional
     public void activateDefaultBill(String accountId, Integer startBalance) {
-        securityService.checkPrivilegeActivateAccount(accountId);
-
         BankAccountEntity account = accountRepository.findById(accountId)
                 .orElseThrow(() -> new BankAccountNotFoundException("Аккаунт не найден с id: " + accountId));
 

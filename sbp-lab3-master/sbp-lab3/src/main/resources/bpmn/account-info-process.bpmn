@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_09pvo36" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.51.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.24.0">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_09pvo36" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.50.1" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.24.0">
   <bpmn:process id="account-info-process" isExecutable="true" camunda:historyTimeToLive="P30D">
     <bpmn:startEvent id="StartEvent_1" name="Старт">
       <bpmn:extensionElements>
@@ -12,19 +12,16 @@
       <bpmn:outgoing>Flow_12hdtrr</bpmn:outgoing>
     </bpmn:userTask>
     <bpmn:sequenceFlow id="Flow_0rft0sy" sourceRef="StartEvent_1" targetRef="Activity_06r7c0s" />
-    <bpmn:serviceTask id="Activity_0mtymdo" name="Проверка прав" camunda:class="com.example.sbp.delegate.CheckPrivilegeBillInfoDelegate">
+    <bpmn:serviceTask id="Activity_0mtymdo" name="Проверка прав" camunda:class="com.example.sbp.delegate.CheckPrivilegeAccountInfoDelegate">
       <bpmn:incoming>Flow_12hdtrr</bpmn:incoming>
-      <bpmn:outgoing>Flow_17b6njh</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1w1i1kj</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:sequenceFlow id="Flow_12hdtrr" sourceRef="Activity_06r7c0s" targetRef="Activity_0mtymdo" />
     <bpmn:exclusiveGateway id="Gateway_0vguy8u">
-      <bpmn:incoming>Flow_17b6njh</bpmn:incoming>
+      <bpmn:incoming>Flow_1w1i1kj</bpmn:incoming>
       <bpmn:outgoing>Flow_1yh2y3d</bpmn:outgoing>
       <bpmn:outgoing>Flow_0656z6n</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:sequenceFlow id="Flow_17b6njh" sourceRef="Activity_0mtymdo" targetRef="Gateway_0vguy8u">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${hasPrivilege == true}</bpmn:conditionExpression>
-    </bpmn:sequenceFlow>
     <bpmn:serviceTask id="Activity_1on5q0c" name="Информация об аккаунте" camunda:class="com.example.sbp.delegate.AccountInfoDelegate">
       <bpmn:incoming>Flow_1yh2y3d</bpmn:incoming>
       <bpmn:outgoing>Flow_0inmsi3</bpmn:outgoing>
@@ -43,6 +40,7 @@
     <bpmn:sequenceFlow id="Flow_0656z6n" sourceRef="Gateway_0vguy8u" targetRef="Activity_0xqgu07">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${hasPrivilege == false}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_1w1i1kj" sourceRef="Activity_0mtymdo" targetRef="Gateway_0vguy8u" />
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="account-info-process">
@@ -82,10 +80,6 @@
         <di:waypoint x="370" y="120" />
         <di:waypoint x="430" y="120" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_17b6njh_di" bpmnElement="Flow_17b6njh">
-        <di:waypoint x="530" y="120" />
-        <di:waypoint x="595" y="120" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1yh2y3d_di" bpmnElement="Flow_1yh2y3d">
         <di:waypoint x="645" y="120" />
         <di:waypoint x="710" y="120" />
@@ -103,6 +97,10 @@
         <di:waypoint x="620" y="240" />
         <di:waypoint x="930" y="240" />
         <di:waypoint x="930" y="160" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1w1i1kj_di" bpmnElement="Flow_1w1i1kj">
+        <di:waypoint x="530" y="120" />
+        <di:waypoint x="595" y="120" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

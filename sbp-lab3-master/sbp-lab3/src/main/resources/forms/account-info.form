@@ -15,7 +15,7 @@
     }
   ],
   "type": "default",
-  "id": "Form_00x1244",
+  "id": "account-info",
   "executionPlatform": "Camunda Cloud",
   "executionPlatformVersion": "8.9.0",
   "exporter": {

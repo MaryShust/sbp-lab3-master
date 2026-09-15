@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class CheckPrivilegeAccountInfoDelegate implements JavaDelegate {
+public class CheckPrivilegeActivateDefaultBillDelegate implements JavaDelegate {
 
     private final SecurityService securityService;
 

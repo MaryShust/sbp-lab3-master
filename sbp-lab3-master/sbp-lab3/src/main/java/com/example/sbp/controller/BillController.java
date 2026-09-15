@@ -67,7 +67,7 @@ public class BillController {
     public ResponseEntity<?> getBillById(
             @Parameter(description = "ID счета", example = "550e8400-e29b-41d4-a716-446655440000")
             @PathVariable String id) {
-        BillResponseDTO response = billService.getBillById(id);
+        BillResponseDTO response = billService.getBillByIdWithCheck(id);
         return ResponseEntity.ok(response);
     }
 
@@ -92,23 +92,6 @@ public class BillController {
             @RequestBody Integer amount) {
 
         BillResponseDTO response = billService.replenishBillWithCheck(accountId, id, amount);
-        return ResponseEntity.ok(response);
-    }
-
-    @GetMapping("/account/{accountId}/default")
-    @Operation(
-            summary = "Получить дефолтный счет аккаунта",
-            description = "Возвращает дефолтный счет для указанного аккаунта. USER - только свои счета, MANAGER - все счета."
-    )
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Дефолтный счет найден",
-                    content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = BillResponseDTO.class)))
-    })
-    public ResponseEntity<?> getDefaultBillByAccountId(
-            @Parameter(description = "ID аккаунта", example = "550e8400-e29b-41d4-a716-446655440000")
-            @PathVariable String accountId) {
-        BillResponseDTO response = billService.getDefaultBillByAccountId(accountId);
         return ResponseEntity.ok(response);
     }
 }

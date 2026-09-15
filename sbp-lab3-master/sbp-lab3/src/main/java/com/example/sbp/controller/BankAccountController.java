@@ -76,24 +76,6 @@ public class BankAccountController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/phone/{phoneNumber}")
-    @Operation(
-            summary = "Получить аккаунт по номеру телефона",
-            description = "Возвращает информацию об аккаунте по номеру телефона. USER - только свой аккаунт, MANAGER - любой."
-    )
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Аккаунт найден",
-                    content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = BankAccountResponseDTO.class)))
-    })
-    public ResponseEntity<?> getAccountByPhone(
-            @Parameter(description = "Номер телефона", example = "79123456789")
-            @PathVariable String phoneNumber
-    ) {
-        BankAccountResponseDTO response = bankAccountService.getAccountByPhone(phoneNumber);
-        return ResponseEntity.ok(response);
-    }
-
     @PostMapping("/{accountId}/activate-default")
     @Operation(
             summary = "Активировать дефолтный счет",
@@ -114,7 +96,7 @@ public class BankAccountController {
             @Parameter(description = "Начальный баланс для активации", example = "1000")
             @RequestParam(required = true) Integer startBalance
     ) {
-        bankAccountService.activateDefaultBill(accountId, startBalance);
+        bankAccountService.activateDefaultBillWithCheck(accountId, startBalance);
         Map<String, String> response = new HashMap<>();
         response.put("message", "Дефолтный счет активирован");
         return ResponseEntity.ok(response);
