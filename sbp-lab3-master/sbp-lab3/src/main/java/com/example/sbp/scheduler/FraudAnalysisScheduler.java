@@ -115,7 +115,7 @@ public class FraudAnalysisScheduler {
                 bitrix24Service.createSuspiciousActivityDeal(
                         saved.getId(),
                         userName,
-                        account.getPhoneNumber(),
+                        account.getEmail(),
                         accountId,
                         bankBic,
                         String.valueOf(duplicateCount),

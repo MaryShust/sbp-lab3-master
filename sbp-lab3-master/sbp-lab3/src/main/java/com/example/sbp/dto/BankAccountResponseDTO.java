@@ -12,8 +12,8 @@ public class BankAccountResponseDTO {
     @Schema(description = "ID аккаунта", example = "550e8400-e29b-41d4-a716-446655440000")
     private String id;
 
-    @Schema(description = "Номер телефона", example = "79123456789")
-    private String phoneNumber;
+    @Schema(description = "Email", example = "test@mail.ru")
+    private String email;
 
     @Schema(description = "Имя владельца", example = "Иван Петров")
     private String ownerName;

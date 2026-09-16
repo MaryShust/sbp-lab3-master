@@ -40,7 +40,7 @@ public class BankAccountController {
                             examples = @ExampleObject(value = """
                                     {
                                         "id": 1,
-                                        "phoneNumber": "79123456789",
+                                        "email": "test@mail.ru",
                                         "defaultBillId": 1,
                                         "status": "created",
                                         "message": "Account created. Default bill is inactive - please fund it to activate"
@@ -48,10 +48,14 @@ public class BankAccountController {
                                     """)))
     })
     public ResponseEntity<?> createAccount(@Valid @RequestBody BankAccountRequestDTO bankAccountRequestDTO) {
-        BankAccountResponseDTO response = bankAccountService.createAccount(bankAccountRequestDTO);
+        BankAccountResponseDTO response = bankAccountService.createAccount(
+                bankAccountRequestDTO.getOwnerName(),
+                bankAccountRequestDTO.getEmail(),
+                bankAccountRequestDTO.getBankBic()
+        );
         Map<String, Object> result = new HashMap<>();
         result.put("id", response.getId());
-        result.put("phoneNumber", response.getPhoneNumber());
+        result.put("email", response.getEmail());
         result.put("defaultBillId", response.getDefaultBillId());
         result.put("status", "created");
         result.put("message", "Счет создан. Пополните для активации");

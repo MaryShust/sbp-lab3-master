@@ -23,7 +23,7 @@ public class AccountInfoDelegate implements JavaDelegate {
         try {
             BankAccountResponseDTO account = bankAccountService.getAccountById(accountID);
             execution.setVariable("id", account.getId());
-            execution.setVariable("phoneNumber", account.getPhoneNumber());
+            execution.setVariable("email", account.getEmail());
             execution.setVariable("ownerName", account.getOwnerName());
             execution.setVariable("bankBic", account.getBankBic());
             execution.setVariable("isActive", account.getIsActive());

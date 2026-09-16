@@ -5,7 +5,6 @@ import com.example.sbp.entity.RoleEntity;
 import com.example.sbp.exception.FileParseException;
 import com.example.sbp.exception.UserAlreadyExistsException;
 import com.example.sbp.repository.RoleRepository;
-import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -49,25 +48,31 @@ public class XmlUserDetailsService implements UserDetailsService {
         Element userElement = findUserElement(document, username);
 
         if (userElement == null) {
-            userElement = createNewUser(document, username, null, null);
+            userElement = createNewUser(document, username, null, null, null, null);
         }
 
         return buildUserDetails(userElement);
     }
 
-    public synchronized void createUserWithPhone(String username, String rawPassword, String phoneNumber) {
+    public synchronized void createUser(
+            String username,
+            String rawPassword,
+            String email,
+            String firstName,
+            String lastName
+    ) {
         Document document = loadDocument();
         if (findUserElement(document, username) != null) {
-            log.debug("Пользователь уже существует: {}", username);
+            log.info("Пользователь уже существует: {}", username);
             throw new UserAlreadyExistsException("Пользователь уже существует");
         }
-        if (phoneNumber != null && !phoneNumber.isBlank() && findUserElementByPhone(document, phoneNumber) != null) {
-            log.debug("Номер телефона уже используется: {}", phoneNumber);
-            throw new UserAlreadyExistsException("Номер телефона уже используется");
+        if (email != null && !email.isBlank() && findUserElementByEmail(document, email) != null) {
+            log.info("Email уже используется: {}", email);
+            throw new UserAlreadyExistsException("Email уже используется");
         }
-        createNewUser(document, username, rawPassword, phoneNumber);
+        createNewUser(document, username, rawPassword, email, firstName, lastName);
         saveDocument(document);
-        log.debug("Создан новый пользователь: {} с телефоном: {}", username, phoneNumber);
+        log.debug("Создан новый пользователь: {} с email: {}", username, email);
     }
 
     public synchronized void updateUserRole(String username, String newRoleName) {
@@ -82,17 +87,17 @@ public class XmlUserDetailsService implements UserDetailsService {
         log.debug("Обновили роль для пользователя {}: {}", username, newRoleName);
     }
 
-    public synchronized void updateUserAccountIdByPhone(String phoneNumber, String accountId) {
+    public synchronized void updateUserAccountIdByEmail(String email, String accountId) {
         Document document = loadDocument();
-        Element userElement = findUserElementByPhone(document, phoneNumber);
+        Element userElement = findUserElementByEmail(document, email);
         if (userElement == null) {
-            log.debug("Не нашли пользователя с телефоном: {}", phoneNumber);
+            log.debug("Не нашли пользователя с email: {}", email);
             return;
         }
         userElement.setAttribute("accountId", accountId != null ? accountId : "");
         incrementTokenVersion(userElement);
         saveDocument(document);
-        log.debug("Обновлен accountId для пользователя с номером телефона {}: {}", phoneNumber, accountId);
+        log.debug("Обновлен accountId для пользователя с email {}: {}", email, accountId);
     }
 
     public synchronized int incrementTokenVersion(String username) {
@@ -146,9 +151,9 @@ public class XmlUserDetailsService implements UserDetailsService {
         String accountIdStr = userElement.getAttribute("accountId");
         String accountId = !accountIdStr.isBlank() ? accountIdStr : null;
 
-        String phoneNumber = userElement.getAttribute("phoneNumber");
-        if (phoneNumber.isBlank()) {
-            phoneNumber = null;
+        String email = userElement.getAttribute("email");
+        if (email.isBlank()) {
+            email = null;
         }
 
         String versionStr = userElement.getAttribute("tokenVersion");
@@ -157,7 +162,7 @@ public class XmlUserDetailsService implements UserDetailsService {
         String role = parseRole(rolesStr);
         Set<Privilege> privileges = collectPrivilegesFromDb(role);
 
-        return new CustomUserDetails(username, password, role, privileges, accountId, phoneNumber, tokenVersion);
+        return new CustomUserDetails(username, password, role, privileges, accountId, email, tokenVersion);
     }
 
     private Document loadDocument() {
@@ -203,21 +208,28 @@ public class XmlUserDetailsService implements UserDetailsService {
         return null;
     }
 
-    private Element findUserElementByPhone(Document document, String phoneNumber) {
-        if (phoneNumber == null || phoneNumber.isBlank()) {
+    private Element findUserElementByEmail(Document document, String email) {
+        if (email == null || email.isBlank()) {
             return null;
         }
         NodeList users = document.getElementsByTagName("user");
         for (int i = 0; i < users.getLength(); i++) {
             Element userElement = (Element) users.item(i);
-            if (phoneNumber.equals(userElement.getAttribute("phoneNumber"))) {
+            if (email.equals(userElement.getAttribute("email"))) {
                 return userElement;
             }
         }
         return null;
     }
 
-    private Element createNewUser(Document document, String username, String rawPassword, String phoneNumber) {
+    private Element createNewUser(
+            Document document,
+            String username,
+            String rawPassword,
+            String email,
+            String firstName,
+            String lastName
+    ) {
         String encodedPassword = rawPassword != null && !rawPassword.isEmpty()
                 ? "{bcrypt}" + passwordEncoder.encode(rawPassword)
                 : "{bcrypt}" + passwordEncoder.encode(UUID.randomUUID().toString());
@@ -225,9 +237,15 @@ public class XmlUserDetailsService implements UserDetailsService {
         Element userElement = document.createElement("user");
         userElement.setAttribute("username", username);
         userElement.setAttribute("password", encodedPassword);
-        userElement.setAttribute("roles", "USER");
-        if (phoneNumber != null && !phoneNumber.isBlank()) {
-            userElement.setAttribute("phoneNumber", phoneNumber);
+        userElement.setAttribute("roles", "");
+        if (email != null && !email.isBlank()) {
+            userElement.setAttribute("email", email);
+        }
+        if (firstName != null && !firstName.isBlank()) {
+            userElement.setAttribute("firstName", firstName);
+        }
+        if (lastName != null && !lastName.isBlank()) {
+            userElement.setAttribute("lastName", lastName);
         }
         userElement.setAttribute("accountId", "");
         userElement.setAttribute("tokenVersion", "0");
@@ -249,12 +267,15 @@ public class XmlUserDetailsService implements UserDetailsService {
     }
 
     private String parseRole(String rolesStr) {
-        if (rolesStr == null || rolesStr.isBlank()) return "USER";
+        if (rolesStr == null || rolesStr.isBlank()) return null;
         return rolesStr;
     }
 
     private Set<Privilege> collectPrivilegesFromDb(String role) {
         Set<Privilege> privileges = new HashSet<>();
+        if (role == null) {
+            return privileges;
+        }
         RoleEntity roleEntity = roleRepository.findByName(role.toUpperCase()).orElse(null);
         if (roleEntity != null) {
             for (PrivilegeEntity privilegeEntity : roleEntity.getPrivileges()) {

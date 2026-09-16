@@ -48,7 +48,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 String role = tokenProvider.getRoleFromToken(jwt);
                 List<String> privilegesStr = tokenProvider.getPrivilegesFromToken(jwt);
                 String accountId = tokenProvider.getAccountIdFromToken(jwt);
-                String phoneNumber = tokenProvider.getPhoneNumberFromToken(jwt);
+                String email = tokenProvider.getEmailFromToken(jwt);
                 int tokenVersion = tokenProvider.getTokenVersionFromToken(jwt);
 
                 Set<Privilege> privileges = new HashSet<>();
@@ -59,7 +59,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 }
 
                 CustomUserDetails userDetails = new CustomUserDetails(
-                        username, "", role, privileges, accountId, phoneNumber, tokenVersion
+                        username, "", role, privileges, accountId, email, tokenVersion
                 );
 
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(

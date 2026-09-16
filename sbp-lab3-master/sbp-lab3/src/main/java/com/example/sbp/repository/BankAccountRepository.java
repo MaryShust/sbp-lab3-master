@@ -7,6 +7,6 @@ import java.util.Optional;
 
 @Repository
 public interface BankAccountRepository extends JpaRepository<BankAccountEntity, String> {
-    Optional<BankAccountEntity> findByPhoneNumber(String phoneNumber);
-    boolean existsByPhoneNumber(String phoneNumber);
+    Optional<BankAccountEntity> findByEmail(String email);
+    boolean existsByEmail(String email);
 }

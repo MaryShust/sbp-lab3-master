@@ -8,6 +8,7 @@
       <bpmn:outgoing>Flow_1xnzwlq</bpmn:outgoing>
     </bpmn:startEvent>
     <bpmn:userTask id="Activity_0s65dz5" name="Ввод данных" camunda:formRef="replanish-bill" camunda:formRefBinding="latest" camunda:assignee="${initiator}">
+      <bpmn:extensionElements />
       <bpmn:incoming>Flow_1xnzwlq</bpmn:incoming>
       <bpmn:outgoing>Flow_00w936w</bpmn:outgoing>
     </bpmn:userTask>

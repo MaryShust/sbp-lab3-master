@@ -2,7 +2,6 @@ package com.example.sbp.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
 @Data
@@ -25,12 +24,27 @@ public class RegisterRequestDTO {
     )
     private String password;
 
-    @NotBlank(message = "Телефон обязателен")
+    @NotBlank(message = "Email обязателен")
     @Schema(
-            description = "Номер телефона в формате 7XXXXXXXXXX",
-            example = "79123456789",
+            description = "Email пользователя",
+            example = "user@example.com",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    @Pattern(regexp = "^7[0-9]{10}$", message = "Телефон должен быть формата 7XXXXXXXXXX")
-    private String phoneNumber;
+    private String email;
+
+    @NotBlank(message = "Имя обязательно")
+    @Schema(
+            description = "Имя",
+            example = "Иван",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private String firstName;
+
+    @NotBlank(message = "Фамилия обязательна")
+    @Schema(
+            description = "Фамилия",
+            example = "Петров",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private String lastName;
 }

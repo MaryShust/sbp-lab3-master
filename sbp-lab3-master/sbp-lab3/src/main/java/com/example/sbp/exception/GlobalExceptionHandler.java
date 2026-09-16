@@ -30,7 +30,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({
             BankBicFormatException.class,
-            PhoneNumberFormatException.class,
+            EmailFormatException.class,
             OwnerNameFormatException.class,
             MessageFormatException.class
     })

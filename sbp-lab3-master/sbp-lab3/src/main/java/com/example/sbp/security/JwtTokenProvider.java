@@ -57,8 +57,8 @@ public class JwtTokenProvider {
             builder.claim("accountId", userDetails.getAccountId());
         }
 
-        if (userDetails.getPhoneNumber() != null) {
-            builder.claim("phoneNumber", userDetails.getPhoneNumber());
+        if (userDetails.getEmail() != null) {
+            builder.claim("email", userDetails.getEmail());
         }
 
         return builder.signWith(getSigningKey()).compact();
@@ -90,8 +90,8 @@ public class JwtTokenProvider {
         return accountId != null ? accountId.toString() : null;
     }
 
-    public String getPhoneNumberFromToken(String token) {
-        return parseClaims(token).get("phoneNumber", String.class);
+    public String getEmailFromToken(String token) {
+        return parseClaims(token).get("email", String.class);
     }
 
     public int getTokenVersionFromToken(String token) {

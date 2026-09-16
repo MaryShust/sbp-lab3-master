@@ -28,6 +28,7 @@ public class CamundaFormDeploymentConfig implements ApplicationRunner {
         deployForm("forms/account-info.form", "account-info.form");
         deployForm("forms/activate-default-bill.form", "activate-default-bill.form");
         deployForm("forms/bill-info.form", "bill-info.form");
+        deployForm("forms/create-bank-account.form", "create-bank-account.form");
     }
 
     private void deployForm(String classpathPath, String resourceName) throws Exception {

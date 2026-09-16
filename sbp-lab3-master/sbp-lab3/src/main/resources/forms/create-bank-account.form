@@ -1,0 +1,58 @@
+{
+  "components": [
+    {
+      "label": "Имя владельца",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_0wy3vng",
+        "columns": null
+      },
+      "id": "Field_1w1thmx",
+      "key": "ownerName",
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "label": "Email",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_05kwlt5",
+        "columns": null
+      },
+      "id": "Field_0b06txs",
+      "key": "email",
+      "validate": {
+        "required": true,
+        "pattern": "^.+@mail.ru$",
+        "patternErrorMessage": "проблемы с форматом почты"
+      }
+    },
+    {
+      "label": "Bic банка",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_19o7u3f",
+        "columns": null
+      },
+      "id": "Field_0zlm78h",
+      "key": "bankBic",
+      "validate": {
+        "required": true,
+        "minLength": 9,
+        "maxLength": "9",
+        "pattern": "^[0-9]{9}$",
+        "patternErrorMessage": "Не тот формат, должно быть 9 цифр"
+      }
+    }
+  ],
+  "type": "default",
+  "id": "create-bank-account2",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.50.1"
+  },
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.24.0",
+  "schemaVersion": 19
+}

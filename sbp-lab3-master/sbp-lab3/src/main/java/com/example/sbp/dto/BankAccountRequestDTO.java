@@ -10,13 +10,12 @@ import lombok.Data;
 public class BankAccountRequestDTO {
 
     @Schema(
-            description = "Номер телефона в формате 7XXXXXXXXXX",
-            example = "79123456789",
+            description = "Email пользователя (для привязки accountId в users.xml)",
+            example = "user@example.com",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    @NotBlank(message = "Телефон обязателен")
-    @Pattern(regexp = "^7[0-9]{10}$", message = "Телефон: 79991234567")
-    private String phoneNumber;
+    @NotBlank(message = "Email обязателен")
+    private String email;
 
     @Schema(
             description = "Имя владельца",

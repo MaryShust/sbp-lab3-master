@@ -19,9 +19,8 @@ public class BankAccountEntity {
     @Id
     private String id;
 
-    @Column(name = "phone_number", unique = true, nullable = false, length = 11)
-    @Size(max = 11, message = "Номер телефона не должен превышать 11 символов")
-    private String phoneNumber;
+    @Column(name = "email", nullable = false)
+    private String email;
 
     @Column(name = "owner_name", nullable = false, length = 100)
     @Size(max = 100, message = "Имя владельца не должно превышать 100 символов")

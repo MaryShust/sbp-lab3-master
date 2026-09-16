@@ -181,7 +181,7 @@ public class PaymentService {
         Optional<BillEntity> billById = tryFindBillById(identifier);
 
         // Если нашли по ID - возвращаем
-        return billById.orElseGet(() -> findDefaultBillByPhone(identifier));
+        return billById.orElseGet(() -> findDefaultBillByEmail(identifier));
     }
 
     private Optional<BillEntity> tryFindBillById(String identifier) {
@@ -192,10 +192,10 @@ public class PaymentService {
         }
     }
 
-    private BillEntity findDefaultBillByPhone(String identifier) {
-        BankAccountEntity account = accountRepository.findByPhoneNumber(identifier)
+    private BillEntity findDefaultBillByEmail(String identifier) {
+        BankAccountEntity account = accountRepository.findByEmail(identifier)
                 .orElseThrow(() -> new BankAccountNotFoundException(
-                        "Аккаунт не найден по телефону: " + identifier));
+                        "Аккаунт не найден по email: " + identifier));
 
         return billRepository.findById(account.getDefaultBillId())
                 .orElseThrow(() -> new BillNotFoundException(
