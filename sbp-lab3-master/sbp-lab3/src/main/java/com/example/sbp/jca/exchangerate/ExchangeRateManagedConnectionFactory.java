@@ -1,6 +1,5 @@
 package com.example.sbp.jca.exchangerate;
 
-
 import jakarta.resource.ResourceException;
 import jakarta.resource.spi.*;
 import javax.security.auth.Subject;
