@@ -1,4 +1,4 @@
-package com.example.sbp.jca.bitrix24;
+package com.example.sbp.jca.exchangerate;
 
 import com.example.sbp.jca.exchangerate.ExchangeRateConnectionFactoryImpl;
 import com.example.sbp.jca.exchangerate.ExchangeRateManagedConnection;
