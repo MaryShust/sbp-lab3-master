@@ -8,7 +8,9 @@ import java.util.Set;
 
 public class Bitrix24ManagedConnectionFactory implements ManagedConnectionFactory {
 
-    private PrintWriter logWriter;
+    private static final long serialVersionUID = 1L;
+
+    private transient PrintWriter logWriter;
     private String webhookUrl;
     private String webhookId;
     private String webhookHash;

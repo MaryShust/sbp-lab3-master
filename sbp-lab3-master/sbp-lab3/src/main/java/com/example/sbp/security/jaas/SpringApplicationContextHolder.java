@@ -7,17 +7,25 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class SpringApplicationContextHolder implements ApplicationContextAware {
-    private static ApplicationContext applicationContext;
+    private static SpringApplicationContextHolder instance;
+    private ApplicationContext applicationContext;
 
     @Override
     public void setApplicationContext(ApplicationContext context) throws BeansException {
-        applicationContext = context;
+        this.applicationContext = context;
+        register(this);
+    }
+
+    private static void register(SpringApplicationContextHolder holder) {
+        instance = holder;
     }
 
     public static <T> T getBean(Class<T> beanClass) {
-        if (applicationContext == null) {
+        SpringApplicationContextHolder holder = instance;
+        ApplicationContext ctx = holder != null ? holder.applicationContext : null;
+        if (ctx == null) {
             throw new IllegalStateException("ApplicationContext is not initialized");
         }
-        return applicationContext.getBean(beanClass);
+        return ctx.getBean(beanClass);
     }
 }

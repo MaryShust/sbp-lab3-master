@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Table(name = "sbp_transactions")
@@ -67,7 +68,7 @@ public class SbpTransactionEntity {
     }
 
     private String generateTransactionId() {
-        return "SBP" + System.currentTimeMillis() + (int)(Math.random() * 1000);
+        return "SBP" + UUID.randomUUID().toString().replace("-", "");
     }
 
     public enum TransactionStatus {

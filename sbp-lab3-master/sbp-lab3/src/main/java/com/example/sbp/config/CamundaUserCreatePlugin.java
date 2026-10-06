@@ -20,10 +20,6 @@ import java.util.List;
 @Component
 public class CamundaUserCreatePlugin extends AbstractProcessEnginePlugin {
 
-
-    //     Флаг "мы уже внутри процесса регистрации пользователя через свой API".
-//     Используется, чтобы не дублировать создание пользователя, когда Camunda-пользователь
-//     создаётся самим сервисом (путь через /api/v1/auth/register).
     private static final ThreadLocal<Boolean> PLAIN_CREATE_FLOW = ThreadLocal.withInitial(() -> Boolean.FALSE);
 
     @Override
@@ -51,14 +47,12 @@ public class CamundaUserCreatePlugin extends AbstractProcessEnginePlugin {
     }
 
     private void handleUserSave(SaveUserCmd cmd) {
-        // Пользователя создаёт наш собственный путь (/api/v1/auth/register) — пропускаем.
         if (isPlainCreateFlow()) {
             return;
         }
         try {
             User camundaUser = extractUser(cmd);
             XmlUserDetailsService userDetailsService = XmlUserDetailsServiceHolder.get();
-            // Пароль, введённый в Camunda Admin, до шифрования лежит в поле newPassword пользователя.
             String rawPassword = extractNewPassword(camundaUser);
             userDetailsService.createUser(
                     camundaUser.getId(),
@@ -68,7 +62,6 @@ public class CamundaUserCreatePlugin extends AbstractProcessEnginePlugin {
                     camundaUser.getLastName()
             );
         } catch (Exception e) {
-            // Не ломаем создание пользователя в Camunda Admin из-за ошибок синхронизации.
             log.warn("Не удалось синхронизировать пользователя из Camunda Admin: {}", e.getMessage());
         }
     }
@@ -90,10 +83,6 @@ public class CamundaUserCreatePlugin extends AbstractProcessEnginePlugin {
         }
     }
 
-    //     Пароль, введённый при создании пользователя, хранится в поле {@code newPassword}
-//     сущности {@link UserEntity} и до {@code saveUser} ещё НЕ зашифрован.
-//     Метод {@link User#getPassword()} в этот момент возвращает null, поэтому читаем
-//     поле через рефлексию.
     private static String extractNewPassword(User camundaUser) {
         if (!(camundaUser instanceof UserEntity userEntity)) {
             log.warn("Пользователь Camunda не является UserEntity, взять пароль не удалось");
@@ -155,7 +144,6 @@ public class CamundaUserCreatePlugin extends AbstractProcessEnginePlugin {
     }
 
 
-    //    Ленивая выдача сервиса, чтобы разорвать циклическую зависимость между плагином(создаётся на этапе построения Camunda engine) и сервисом, который зависит от engine.
     private static final class XmlUserDetailsServiceHolder {
         private static XmlUserDetailsService instance;
 

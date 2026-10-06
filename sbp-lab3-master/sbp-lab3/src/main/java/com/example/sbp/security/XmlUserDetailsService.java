@@ -18,14 +18,21 @@ import org.w3c.dom.NodeList;
 import java.util.UUID;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import org.xml.sax.SAXException;
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.NoSuchFileException;
+import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.Set;
+import javax.xml.XMLConstants;
 
 @Slf4j
 @Service
@@ -167,9 +174,14 @@ public class XmlUserDetailsService implements UserDetailsService {
 
     private Document loadDocument() {
         try {
-            File file = new File(xmlPath);
+            File file = resolveUserFile();
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
             factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+            factory.setFeature("http://xml.org/sax/features/external-general-entities", false);
+            factory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+            factory.setExpandEntityReferences(false);
+            factory.setXIncludeAware(false);
             DocumentBuilder builder = factory.newDocumentBuilder();
             if (!file.exists()) {
                 Document doc = builder.newDocument();
@@ -177,21 +189,37 @@ public class XmlUserDetailsService implements UserDetailsService {
                 return doc;
             }
             return builder.parse(file);
-        } catch (Exception e) {
+        } catch (IOException | SAXException | ParserConfigurationException e) {
             throw new FileParseException("Ошибка загрузки");
         }
     }
 
     private void saveDocument(Document document)  {
         try {
-            File file = new File(xmlPath);
-            Transformer transformer = TransformerFactory.newInstance().newTransformer();
+            File file = resolveUserFile();
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            transformerFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+            transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+            transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
+            Transformer transformer = transformerFactory.newTransformer();
             transformer.setOutputProperty(OutputKeys.INDENT, "no");
             transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
             transformer.transform(new DOMSource(document), new StreamResult(file));
-        } catch (Exception e) {
+        } catch (IOException | TransformerException e) {
             throw new FileParseException("Ошибка сохранения");
         }
+    }
+
+    private File resolveUserFile() throws IOException {
+        String path = xmlPath;
+        if (path == null || path.isBlank()) {
+            throw new NoSuchFileException("users.xml path is not configured");
+        }
+        Path p = Path.of(path).toAbsolutePath().normalize();
+        if (!p.startsWith(Path.of(".").toAbsolutePath().normalize())) {
+            throw new NoSuchFileException("users.xml path must be relative to the working directory");
+        }
+        return p.toFile();
     }
 
     private Element findUserElement(Document document, String username) {
