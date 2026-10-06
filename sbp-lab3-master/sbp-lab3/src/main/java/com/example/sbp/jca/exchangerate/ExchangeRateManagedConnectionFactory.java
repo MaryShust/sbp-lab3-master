@@ -1,7 +1,6 @@
 package com.example.sbp.jca.exchangerate;
 
-import com.example.sbp.jca.exchangerate.ExchangeRateConnectionFactoryImpl;
-import com.example.sbp.jca.exchangerate.ExchangeRateManagedConnection;
+
 import jakarta.resource.ResourceException;
 import jakarta.resource.spi.*;
 import javax.security.auth.Subject;
