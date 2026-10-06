@@ -1,5 +1,7 @@
-package com.example.sbp.jca.exchangerate;
+package com.example.sbp.jca.bitrix24;
 
+import com.example.sbp.jca.exchangerate.ExchangeRateConnectionFactoryImpl;
+import com.example.sbp.jca.exchangerate.ExchangeRateManagedConnection;
 import jakarta.resource.ResourceException;
 import jakarta.resource.spi.*;
 import javax.security.auth.Subject;
@@ -8,7 +10,9 @@ import java.util.Set;
 
 public class ExchangeRateManagedConnectionFactory implements ManagedConnectionFactory {
 
-    private PrintWriter logWriter;
+    private static final long serialVersionUID = 1L;
+
+    private transient PrintWriter logWriter;
 
     @Override
     public Object createConnectionFactory() throws ResourceException {
