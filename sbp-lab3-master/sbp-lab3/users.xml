@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><users>
-    <user accountId="" email="admin@mail.ru" firstName="Sys" lastName="Admin" password="{bcrypt}$2b$12$MDlJb2f6FAlBtFVrLVtE5u/l28.t0WGuqHZQlmZQ0k44MDDU3mO8O" roles="ADMIN" tokenVersion="8" username="admin"/>
+    <user accountId="" email="admin@mail.ru" firstName="Sys" lastName="Admin" password="{bcrypt}$2b$12$MDlJb2f6FAlBtFVrLVtE5u/l28.t0WGuqHZQlmZQ0k44MDDU3mO8O" roles="ADMIN" tokenVersion="10" username="admin"/>
+    <user accountId="" email="testID@mail.ru" firstName="testID" lastName="testID" password="{bcrypt}$2a$10$Fc0gMT1Q7CBYiRolQ6bK9O3qLrQLqSknq4hsSsQXWrWSFD1cXHDy6" roles="USER" tokenVersion="1" username="testID"/>
 
-  </users>
+    <user accountId="5ba557e20d8250453a0b8a702aecc029e8b2" email="Test2@mail.ru" firstName="Test2" lastName="Test2" password="{bcrypt}$2a$10$Yn3yrhpKMt3qG3tzroZDaOJFEnwKhZw4ypVEHoQ40xJZNdYunfsxC" roles="ADMIN" tokenVersion="7" username="Test2"/>
+    <user accountId="de7571f30b13104cf9096e20ee7804bf01a4" email="Chrissy@mail.ru" firstName="Chrissy" lastName="Jean" password="{bcrypt}$2a$10$NEIL9HP8mpY5ilCU7Xk8Le7uatH0pDaQhGWmQcs3hHvXN2tNRhhHK" roles="MANAGER" tokenVersion="3" username="ChrissyJ"/>
+    <user accountId="" email="Nataniel@mail.ru" firstName="Nataniel" lastName="Miller" password="{bcrypt}$2a$10$Y1Zw5PEOgLgrtpolkAUWXOkjCGRzJ/z7vK59pDQhDcCzGRrLKMH8C" roles="MANAGER" tokenVersion="2" username="Nataniel"/>
+    <user accountId="" email="new@mail.ru" firstName="New" lastName="New" password="{bcrypt}$2a$10$XjyENVKwSPWoQRgs50FLkejReucRIdN6Ypl/KpMZYwa6DYo1VOnN." roles="USER" tokenVersion="1" username="New"/>
+    <user accountId="" email="TestM@mail.ru" firstName="TestM" lastName="TestM" password="{bcrypt}$2a$10$tBBziA9hyz6XX6zsOwyxcetHuhktci3WlMx8./VsXu1bb8fqCAtqG" roles="MANAGER" tokenVersion="2" username="TestM"/></users>

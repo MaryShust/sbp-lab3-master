@@ -11,10 +11,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.PostConstruct;
 import jakarta.resource.ResourceException;
 import org.springframework.stereotype.Service;
-import java.io.Serializable;
 
 @Service
-public class ExchangeRateService implements Serializable {
+public class ExchangeRateService {
 
     private transient ExchangeRateConnectionFactoryImpl connectionFactory;
     private final ObjectMapper objectMapper = new ObjectMapper();

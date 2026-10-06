@@ -31,7 +31,7 @@ public class BankAccountService {
             String email,
             String bankBic
     ) {
-        log.debug("Создать новый аккаунт с email: {}", email);
+        log.debug("Создать новый аккаунт с email: {}", sanitizeForLog(email));
 
         validateOwnerName(ownerName);
         validateBankBic(bankBic);
@@ -69,7 +69,7 @@ public class BankAccountService {
         account = accountRepository.save(account);
 
         userDetailsService.updateUserAccountIdByEmail(account.getEmail(), account.getId());
-        log.debug("Связали аккаунт {} с пользователем с email {}", account.getId(), account.getEmail());
+        log.debug("Связали аккаунт {} с пользователем с email {}", account.getId(), sanitizeForLog(account.getEmail()));
 
         return mapToResponseDTO(account);
     }
@@ -103,7 +103,7 @@ public class BankAccountService {
             defaultBillEntity.setIsActive(true);
             defaultBillEntity.setBalance(startBalance);
             billRepository.save(defaultBillEntity);
-            log.debug("Дефолтный счет {} активирован для аккаунта {}", defaultBillEntity.getId(), accountId);
+            log.debug("Дефолтный счет {} активирован для аккаунта {}", defaultBillEntity.getId(), sanitizeForLog(accountId));
         }
     }
 
@@ -119,6 +119,13 @@ public class BankAccountService {
         dto.setDefaultBillId(account.getDefaultBillId());
         dto.setAllBillIds(account.getAllBillIds());
         return dto;
+    }
+
+    private String sanitizeForLog(String value) {
+        if (value == null) {
+            return null;
+        }
+        return value.replace("\r", "\\r").replace("\n", "\\n");
     }
 
     private void validateOwnerName(String ownerName) {

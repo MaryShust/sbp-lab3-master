@@ -11,12 +11,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import java.io.Serializable;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class Bitrix24Service implements Serializable {
+public class Bitrix24Service {
 
     @Value("${bitrix24.webhook.url}")
     private String webhookUrl;
@@ -64,21 +63,21 @@ public class Bitrix24Service implements Serializable {
             String senderInfo = (senderAccountId != null && senderBankBic != null)
                     ? String.format(" | Отпр. ID: %s, БИК: %s", senderAccountId, senderBankBic)
                     : "";
-            String title = String.format("Подозрительная активность: %s (ID аккаунта: %s, БИК: %s)%s", 
+            String title = String.format("Подозрительная активность: %s (ID аккаунта: %s, БИК: %s)%s",
                     userName, accountId, bankBic, senderInfo);
-            
+
             Long dealId = conn.createDeal(
                     title,
                     userName,
                     phone,
                     totalAmount,
                     riskLevel,
-                    String.format("БИК получателя: %s\nБИК отправителя: %s\nID аккаунта получателя: %s\nID аккаунта отправителя: %s\nДубликатов: %s\n%s", 
-                            bankBic, senderBankBic != null ? senderBankBic : "N/A", accountId, 
-                            senderAccountId != null ? senderAccountId : "N/A", duplicateCount, 
+                    String.format("БИК получателя: %s%nБИК отправителя: %s%nID аккаунта получателя: %s%nID аккаунта отправителя: %s%nДубликатов: %s%n%s",
+                            bankBic, senderBankBic != null ? senderBankBic : "N/A", accountId,
+                            senderAccountId != null ? senderAccountId : "N/A", duplicateCount,
                             description != null ? description : "")
             );
-            
+
             saveSyncRecord(suspicionId, dealId, Bitrix24SyncEntity.SyncStatus.SUCCESS, null);
             log.info("Created Bitrix24 deal {} for suspicious user {}", dealId, userName);
             return dealId;
