@@ -40,7 +40,6 @@ public class AuthService {
         );
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-
         return tokenProvider.generateToken(authentication);
     }
 
