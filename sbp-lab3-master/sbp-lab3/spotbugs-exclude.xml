@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  SpotBugs/FindSecBugs exclusion filter.
+
+  EI_EXPOSE_REP / EI_EXPOSE_REP2 are reported whenever a class stores or returns
+  a reference to a mutable object. In this project those findings are false
+  positives by design:
+
+    * Spring components (controllers, services, config, security) receive their
+      dependencies via constructor injection; returning the injected reference is
+      the intended behaviour of the framework.
+    * JPA @Entity / Lombok @Data classes expose their fields on purpose so that
+      Hibernate and Jackson can read/write them. Defensive copying would break
+      persistence and JSON (de)serialization.
+    * JCA connection classes are plain adapters whose getters/setters are part
+      of the JCA SPI contract.
+
+  All other categories (security, correctness, serialization, ...) stay enabled.
+-->
+<FindBugsFilter>
+    <Match>
+        <Bug pattern="EI_EXPOSE_REP,EI_EXPOSE_REP2"/>
+        <Class name="~com\.example\.sbp\..*"/>
+    </Match>
+</FindBugsFilter>
