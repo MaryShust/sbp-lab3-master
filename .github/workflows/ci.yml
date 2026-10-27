@@ -69,7 +69,7 @@ jobs:
         working-directory: ${{ env.PROJECT_DIR }}
         run: ./mvnw -B -ntp test
 
-      # ------------------------------------------------------------
+      # -----------------------------------------------------------
       # SCA: OWASP Dependency-Check against known CVEs (NVD)
       #   OSS Index is disabled (requires credentials); the NVD analyzer
       #   runs without an account. The build fails on CVSS >= threshold.
