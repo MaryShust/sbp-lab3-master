@@ -209,8 +209,7 @@ curl -i http://localhost:8087/api/v1/payments/SBP.../status \
 GitHub Actions workflow — `.github/workflows/ci.yml`:
 
 - **SAST** — SpotBugs + FindSecBugs (`spotbugs:spotbugs`), отчёт `spotbugs-report`.
-- **SCA** — OWASP Dependency-Check против NVD (`dependency-check-report.*`),
-  шаг помечен `continue-on-error`, чтобы публиковать отчёт, не блокируя пайплайн.
+- **SCA** — OWASP Dependency-Check против NVD (`dependency-check-report.*`).
 - Отчёты публикуются как артефакты в разделе **Actions** и в **Security → Code scanning**.
 
 ---
